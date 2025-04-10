@@ -1,8 +1,10 @@
 // src/App.jsx
 import React, { useState } from "react";
-import FormUser from "./components/FormUser"; // สมมติว่าคุณมี FormUser อยู่แล้ว
-import Login from "./components/Login"; // นำเข้า Login component
+import FormUser from "./components/FormUser"; // สมมติว่าคุณมี FormUser อยู่แล้ว from "./components/FormUser";
+import Login from "./pages/auth/Login"; // สมมติว่าคุณมี Login อยู่แล้ว
 import { ConfigProvider } from "antd";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Register from "./pages/auth/Register";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false); // ใช้สถานะในการเช็คการล็อกอิน
@@ -13,15 +15,15 @@ function App() {
   };
 
   return (
-    <ConfigProvider>
+    <BrowserRouter>
       <div style={{ padding: "2rem" }}>
-        {!isLoggedIn ? (
-          <Login onLoginSuccess={onLoginSuccess} /> // เรียกใช้ Login component
-        ) : (
-          <FormUser />
-        )}
+        <Routes>
+          <Route path="/form" element={<FormUser />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
       </div>
-    </ConfigProvider>
+    </BrowserRouter>
   );
 }
 

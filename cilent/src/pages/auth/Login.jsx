@@ -2,10 +2,10 @@
 import React from "react";
 import { Button, Form, Input } from "antd";
 
-const Login = ({ onLoginSuccess }) => {
+const Login = () => {
   const onFinish = () => {
     // เมื่อกดปุ่ม Login เรียก onLoginSuccess เพื่อเปลี่ยนไปที่หน้า FormUser
-    onLoginSuccess();
+    console.log("Login successful");
   };
 
   return (

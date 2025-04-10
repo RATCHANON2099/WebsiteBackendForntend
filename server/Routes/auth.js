@@ -3,9 +3,10 @@
 const express = require("express");
 const router = express.Router(); //สร้างตัวแปร router เพื่อใช้ในการทำงานของ express.Router()
 
+const { register, login } = require("../Controllers/auth");
+
 //http://localhost:5000/api/auth
-router.get("/auth", (req, res) => {
-  res.send("Hello auth Endpoint"); //ส่งข้อความ Hello Product กลับไปยัง client
-});
+router.post("/register", register);
+router.post("/login", login);
 
 module.exports = router; //ส่ง router ออกไปใช้งานในไฟล์อื่นๆ
