@@ -9,12 +9,6 @@ import Home from "./pages/Home";
 
 function App() {
   //JavaScript
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // ใช้สถานะในการเช็คการล็อกอิน
-
-  // ฟังก์ชันที่เรียกใช้เมื่อกดปุ่ม Login
-  const onLoginSuccess = () => {
-    setIsLoggedIn(true); // เปลี่ยนสถานะให้เข้าสู่หน้า FormUser
-  };
 
   return (
     //HTML
