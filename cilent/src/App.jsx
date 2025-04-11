@@ -6,6 +6,8 @@ import "antd/dist/antd.css"; // นำเข้า CSS ของ Ant Design
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Register from "./pages/auth/Register";
 import Home from "./pages/Home";
+import Data from "./pages/Data";
+import FormEditUser from "./pages/auth/FormEditUser";
 
 function App() {
   //JavaScript
@@ -19,6 +21,8 @@ function App() {
           <Route path="/form" element={<FormUser />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/data" element={<Data />} />
+          <Route path="/edit/:id" element={<FormEditUser />} />
         </Routes>
       </div>
     </BrowserRouter>

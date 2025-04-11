@@ -17,11 +17,11 @@ const User = sequelize.define(
     },
     email: {
       type: DataTypes.STRING, //กำหนด type ของ column email เป็น string
-      allowNull: false, //กำหนดว่า column email สามารถเป็น null ได้
+      allowNull: true, //กำหนดว่า column email สามารถเป็น null ได้
     },
     password: {
       type: DataTypes.STRING, //กำหนด type ของ column password เป็น string
-      allowNull: false, //กำหนดว่า column password สามารถเป็น null ได้
+      allowNull: true, //กำหนดว่า column password สามารถเป็น null ได้
     },
     id_number: {
       type: DataTypes.STRING, //กำหนด type ของ column id_number เป็น string

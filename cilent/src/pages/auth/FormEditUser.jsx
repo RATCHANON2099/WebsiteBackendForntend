@@ -1,56 +1,67 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { create } from "../functions/user";
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { read } from "../../functions/user";
+import { update } from "../../functions/user";
 
-const FormUser = () => {
-  //JavaScript
-  const [data, setData] = useState([]);
-  const [form, setForm] = useState([]);
+const FormEditUser = () => {
+  const params = useParams();
+  const navigate = useNavigate();
+  const [data, setData] = useState({
+    name: "",
+    age: "",
+    id_number: "",
+    phone_number: "",
+    role: "",
+  });
+
   useEffect(() => {
-    //code
-    loadData();
+    loadData(params.id);
   }, []);
 
-  const loadData = async () => {
-    await axios
-      .get(import.meta.env.VITE_API_URL + "/user")
-      .then((res) => setData(res.data))
+  const loadData = async (id) => {
+    read(id)
+      .then((res) => {
+        setData(res.data);
+      })
       .catch((err) => console.log(err));
   };
 
   const handleChange = (e) => {
     //code
-    setForm({
-      ...form,
+    setData({
+      ...data,
       [e.target.name]: e.target.value,
     });
   };
   const handleSubmit = async (e) => {
     //code
     e.preventDefault(); //ห้ามรีเฟส
-    create(form)
+    console.log(data);
+    update(params.id, data)
       .then((res) => {
         console.log(res);
-        loadData();
+        navigate("/data");
       })
       .catch((err) => console.log(err));
   };
 
   return (
     <div>
-      FormUser
+      FormEditUser
       <form onSubmit={handleSubmit}>
         <input
           type="text"
           name="name"
           onChange={(e) => handleChange(e)}
           placeholder="name"
+          value={data.name}
         />{" "}
         <br />
         <input
           type="text"
           name="age"
           placeholder="age"
+          value={data.age}
           onChange={(e) => handleChange(e)}
         />{" "}
         <br />
@@ -58,6 +69,7 @@ const FormUser = () => {
           type="text"
           name="id_number"
           placeholder="ID"
+          value={data.id_number}
           onChange={(e) => handleChange(e)}
         />{" "}
         <br />
@@ -65,6 +77,7 @@ const FormUser = () => {
           type="text"
           name="phone_number"
           placeholder="Phone"
+          value={data.phone_number}
           onChange={(e) => handleChange(e)}
         />{" "}
         <br />
@@ -72,6 +85,7 @@ const FormUser = () => {
           type="text"
           name="role"
           placeholder="Role"
+          value={data.role}
           onChange={(e) => handleChange(e)}
         />{" "}
         <br />
@@ -81,4 +95,4 @@ const FormUser = () => {
   );
 };
 
-export default FormUser;
+export default FormEditUser;
