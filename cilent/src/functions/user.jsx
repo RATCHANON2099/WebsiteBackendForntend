@@ -17,3 +17,7 @@ export const read = async (id) => {
 export const update = async (id, data) => {
   return await axios.put(import.meta.env.VITE_API_URL + "/user/" + id, data);
 };
+
+export const register = async (data) => {
+  return await axios.post(import.meta.env.VITE_API_URL + "/register/", data);
+};

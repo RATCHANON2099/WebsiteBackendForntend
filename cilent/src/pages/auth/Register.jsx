@@ -2,14 +2,20 @@
 import React from "react";
 import { Form, Input, Button } from "antd";
 import { useNavigate } from "react-router-dom";
+import { register } from "../../functions/user";
 
 const Register = () => {
   const navigate = useNavigate();
 
-  const onFinish = (values) => {
-    console.log("Register values:", values);
-    // สมมุติว่า register สำเร็จ พากลับไปหน้า login
-    navigate("/");
+  const onFinish = (value) => {
+    register(value)
+      .then((res) => {
+        console.log("Register Success", res.data);
+        navigate("/login");
+      })
+      .catch((err) => {
+        console.log("Register Error", err);
+      });
   };
 
   return (
@@ -43,7 +49,7 @@ const Register = () => {
           </Button>
         </Form.Item>
         <Form.Item>
-          <Button block onClick={() => navigate("/")}>
+          <Button block onClick={() => navigate("/login")}>
             Back to Login
           </Button>
         </Form.Item>
