@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { Table, Button, Space, message } from "antd";
+import { Link } from "react-router-dom";
 import { remove } from "../functions/user";
 import { getdata } from "../functions/user";
-import { Link } from "react-router-dom";
 
 const Data = () => {
-  //JavaScript
   const [data, setData] = useState([]);
+
   useEffect(() => {
-    //code
     loadData();
   }, []);
 
@@ -17,55 +16,102 @@ const Data = () => {
       .then((res) => setData(res.data))
       .catch((err) => console.log(err));
   };
-  console.log(data);
 
   const handleRemove = async (id) => {
     remove(id)
       .then((res) => {
-        console.log(res);
+        message.success("User deleted successfully");
         loadData();
       })
       .catch((err) => {
+        message.error("Failed to delete user");
         console.log(err);
       });
   };
 
+  const columns = [
+    {
+      title: "No.",
+      dataIndex: "index",
+      render: (text, record, index) => index + 1,
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+    },
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Age",
+      dataIndex: "age",
+      key: "age",
+    },
+    {
+      title: "Phone",
+      dataIndex: "phone_number",
+      key: "phone_number",
+    },
+    {
+      title: "ID",
+      dataIndex: "id_number",
+      key: "id_number",
+    },
+    {
+      title: "Role",
+      dataIndex: "role",
+      key: "role",
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (text, record) => (
+        <Space size="middle">
+          <Button
+            danger
+            onClick={() => handleRemove(record.id)}
+            style={{ borderRadius: "5px", fontWeight: "bold" }}
+          >
+            Delete
+          </Button>
+        </Space>
+      ),
+    },
+    {
+      title: "Edit",
+      key: "edit",
+      render: (text, record) => (
+        <Space size="middle">
+          <Link to={`/edit/${record.id}`}>
+            <Button
+              type="primary"
+              style={{ borderRadius: "5px", fontWeight: "bold" }}
+            >
+              Edit
+            </Button>
+          </Link>
+        </Space>
+      ),
+    },
+  ];
+
   return (
-    <div>
-      <table className="table">
-        <thead>
-          <tr>
-            <th scope="col">No.</th>
-            <th scope="col">Email</th>
-            <th scope="col">Name</th>
-            <th scope="col">Age</th>
-            <th scope="col">Phone</th>
-            <th scope="col">ID</th>
-            <th scope="col">Role</th>
-            <th scope="col">action</th>
-            <th scope="col">edit</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data
-            ? data.map((item, index) => (
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>{item.email}</td>
-                  <td>{item.name}</td>
-                  <td>{item.age}</td>
-                  <td>{item.phone_number}</td>
-                  <td>{item.id_number}</td>
-                  <td>{item.role}</td>
-                  <td onClick={() => handleRemove(item.id)}>delete</td>
-                  <td>
-                    <Link to={`/edit/${item.id}`}>edit</Link>
-                  </td>
-                </tr>
-              ))
-            : null}
-        </tbody>
-      </table>
+    <div style={{ padding: "20px 50px" }}>
+      <h2>Users Data</h2>
+      <Table
+        columns={columns}
+        dataSource={data}
+        rowKey="id"
+        pagination={false}
+        style={{
+          background: "#fff",
+          borderRadius: "10px",
+          boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
+        }}
+      />
     </div>
   );
 };

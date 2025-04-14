@@ -1,9 +1,7 @@
-// src/pages/auth/FormEditUser.jsx
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { read } from "../../functions/user";
-import { update } from "../../functions/user";
-import { message, Layout, Form, Input, Button, PageHeader } from "antd";
+import { read, update } from "../../functions/user";
+import { Form, Input, Button, message, Layout, PageHeader } from "antd";
 
 const { Content } = Layout;
 
@@ -23,11 +21,13 @@ const FormEditUser = () => {
   }, [params.id]);
 
   const loadData = async (id) => {
-    read(id)
-      .then((res) => {
-        setData(res.data);
-      })
-      .catch((err) => console.log(err));
+    try {
+      const res = await read(id);
+      setData(res.data);
+    } catch (err) {
+      console.log("Error loading data:", err);
+      message.error("Failed to load user data");
+    }
   };
 
   const handleChange = (e) => {
@@ -38,16 +38,19 @@ const FormEditUser = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    update(params.id, data)
-      .then((res) => {
-        message.success("Update Successful");
-        navigate("/data");
-      })
-      .catch((err) => {
-        console.error(err);
-        message.error("Update Failed");
-      });
+    e.preventDefault(); // ห้ามรีเฟรชหน้าเมื่อ submit
+    try {
+      const res = await update(params.id, data); // เรียก API update
+      if (res) {
+        message.success("User updated successfully");
+        navigate("/data"); // พาไปหน้ารายชื่อข้อมูลผู้ใช้หลังจากอัพเดทสำเร็จ
+      } else {
+        message.error("Update failed");
+      }
+    } catch (err) {
+      console.log("Error during update:", err);
+      message.error("Failed to update user");
+    }
   };
 
   return (
@@ -72,7 +75,7 @@ const FormEditUser = () => {
           />
           <Form
             layout="vertical"
-            onFinish={handleSubmit}
+            onSubmitCapture={handleSubmit} // ใช้ onSubmitCapture แทน onFinish
             initialValues={data}
             style={{ marginTop: "30px" }}
           >
@@ -85,6 +88,7 @@ const FormEditUser = () => {
                 name="name"
                 onChange={handleChange}
                 placeholder="Enter name"
+                value={data.name}
                 style={{ borderRadius: "5px" }}
               />
             </Form.Item>
@@ -98,6 +102,7 @@ const FormEditUser = () => {
                 name="age"
                 onChange={handleChange}
                 placeholder="Enter age"
+                value={data.age}
                 style={{ borderRadius: "5px" }}
               />
             </Form.Item>
@@ -113,6 +118,7 @@ const FormEditUser = () => {
                 name="id_number"
                 onChange={handleChange}
                 placeholder="Enter ID Number"
+                value={data.id_number}
                 style={{ borderRadius: "5px" }}
               />
             </Form.Item>
@@ -128,6 +134,7 @@ const FormEditUser = () => {
                 name="phone_number"
                 onChange={handleChange}
                 placeholder="Enter phone number"
+                value={data.phone_number}
                 style={{ borderRadius: "5px" }}
               />
             </Form.Item>
@@ -141,6 +148,7 @@ const FormEditUser = () => {
                 name="role"
                 onChange={handleChange}
                 placeholder="Enter role"
+                value={data.role}
                 style={{ borderRadius: "5px" }}
               />
             </Form.Item>
