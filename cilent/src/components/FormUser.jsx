@@ -1,11 +1,19 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { create } from "../functions/user";
+import { useNavigate } from "react-router-dom";
 
 const FormUser = () => {
   //JavaScript
   const [data, setData] = useState([]);
-  const [form, setForm] = useState([]);
+  const navigate = useNavigate();
+  const [form, setForm] = useState({
+    name: "",
+    age: "",
+    id_number: "",
+    phone_number: "",
+    role: "",
+  });
   useEffect(() => {
     //code
     loadData();
@@ -27,11 +35,12 @@ const FormUser = () => {
   };
   const handleSubmit = async (e) => {
     //code
-    e.preventDefault(); //ห้ามรีเฟส
+    e.preventDefault(); //ไม่ต้องรีเฟสหน้า
     create(form)
       .then((res) => {
         console.log(res);
         loadData();
+        navigate("/data");
       })
       .catch((err) => console.log(err));
   };

@@ -8,6 +8,7 @@ const Login = () => {
   const onFinish = () => {
     // เมื่อกดปุ่ม Login เรียก onLoginSuccess เพื่อเปลี่ยนไปที่หน้า FormUser
     console.log("Login successful");
+    navigate("/form");
   };
 
   return (
