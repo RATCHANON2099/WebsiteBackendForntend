@@ -1,14 +1,34 @@
 // src/components/Login.jsx
 import React from "react";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, message } from "antd";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Login = () => {
   const navigate = useNavigate();
-  const onFinish = () => {
-    // เมื่อกดปุ่ม Login เรียก onLoginSuccess เพื่อเปลี่ยนไปที่หน้า FormUser
-    console.log("Login successful");
-    navigate("/form");
+  const onFinish = async (values) => {
+    try {
+      // เรียก backend /login
+      const res = await axios.post(
+        import.meta.env.VITE_API_URL + "/login",
+        values
+      );
+
+      const user = res.data.user; // { id, name, email }
+      const token = res.data.token;
+
+      // บันทึกข้อมูลลง localStorage เผื่อใช้ภายหลัง
+      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("token", token);
+
+      message.success("Login Success");
+
+      // ไปหน้า /edit/:id
+      navigate(`/edit/${user.id}`);
+    } catch (err) {
+      console.error("Login Error", err);
+      message.error("Invalid email or password");
+    }
   };
 
   return (
