@@ -38,12 +38,12 @@ const FormEditUser = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // ห้ามรีเฟรชหน้าเมื่อ submit
+    e.preventDefault();
     try {
-      const res = await update(params.id, data); // เรียก API update
+      const res = await update(params.id, data);
       if (res) {
         message.success("User updated successfully");
-        navigate("/data"); // พาไปหน้ารายชื่อข้อมูลผู้ใช้หลังจากอัพเดทสำเร็จ
+        navigate("/data");
       } else {
         message.error("Update failed");
       }
@@ -54,12 +54,26 @@ const FormEditUser = () => {
   };
 
   return (
-    <Layout style={{ minHeight: "100vh" }}>
-      <Content style={{ padding: "20px 50px", background: "#f0f2f5" }}>
+    <Layout
+      style={{
+        minHeight: "100vh",
+        margin: 0,
+        padding: 0,
+        background: "#f0f2f5",
+      }}
+    >
+      <Content
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          padding: "40px 20px",
+        }}
+      >
         <div
           style={{
+            width: "100%",
             maxWidth: "600px",
-            margin: "0 auto",
             background: "#fff",
             padding: "40px",
             borderRadius: "10px",
@@ -68,16 +82,23 @@ const FormEditUser = () => {
         >
           <PageHeader
             className="site-page-header"
-            title="Edit User"
+            title={<span style={{ color: "#fff" }}>Edit User</span>}
+            subTitle={
+              <span style={{ color: "#fff" }}>Update user information</span>
+            }
             onBack={() => navigate("/data")}
-            subTitle="Update user information"
-            style={{ background: "#001529", color: "#fff" }}
+            style={{
+              background: "#001529",
+              borderRadius: "8px",
+              padding: "16px",
+              marginBottom: "24px",
+            }}
           />
+
           <Form
             layout="vertical"
-            onSubmitCapture={handleSubmit} // ใช้ onSubmitCapture แทน onFinish
+            onSubmitCapture={handleSubmit}
             initialValues={data}
-            style={{ marginTop: "30px" }}
           >
             <Form.Item
               label="Name"
