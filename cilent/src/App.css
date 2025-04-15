@@ -7,6 +7,13 @@ body,
 #root {
   margin: 0;
   padding: 0;
-  height: 100%;
-  background: #f0f2f5;
+  height: 100%; /* เพิ่มการตั้งค่าความสูง */
+  width: 100%; /* เพิ่มการตั้งค่าความกว้าง */
+  background: #f0f2f5; /* ตั้งพื้นหลัง */
+}
+
+body {
+  display: flex;
+  min-height: 100%; /* ให้แน่ใจว่าระบบยืดขนาดเต็มหน้าจอ */
+  flex-direction: column;
 }
