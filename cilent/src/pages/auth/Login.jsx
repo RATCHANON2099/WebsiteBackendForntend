@@ -3,6 +3,8 @@ import React from "react";
 import { Button, Form, Input, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { Menu } from "antd";
+import { DownOutlined } from "@ant-design/icons"; // ✅ นำเข้าลูกศรชี้ลง
 
 const Login = () => {
   const navigate = useNavigate();
@@ -31,36 +33,72 @@ const Login = () => {
     }
   };
 
+  // Navbar (เพิ่มเติม)
+  const location = window.location.pathname; // ตรวจสอบ path ปัจจุบัน
+  const selectedKey = location;
+
   return (
-    <div style={{ width: "300px", margin: "100px auto" }}>
-      <h2></h2>
-      <Form onFinish={onFinish} layout="vertical">
-        <Form.Item
-          name="email"
-          label="Email"
-          rules={[{ required: true, message: "Please input your username!" }]}
+    <>
+      {/* Navbar */}
+      <div
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          zIndex: 10,
+          backgroundColor: "#001529",
+          padding: "0 1rem",
+          display: "flex",
+          justifyContent: "flex-end",
+        }}
+      >
+        <Menu
+          mode="horizontal"
+          selectedKeys={[selectedKey]}
+          onClick={(e) => navigate(e.key)}
+          theme="dark"
+          style={{
+            backgroundColor: "transparent",
+            borderBottom: "none",
+          }}
+          overflowedIndicator={<DownOutlined />}
         >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          name="password"
-          label="Password"
-          rules={[{ required: true, message: "Please input your password!" }]}
-        >
-          <Input.Password />
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit" block>
-            LOGIN
-          </Button>
-        </Form.Item>
-        <Form.Item>
-          <Button block onClick={() => navigate("/register")}>
-            REGISTER
-          </Button>
-        </Form.Item>
-      </Form>
-    </div>
+          <Menu.Item key="/">Home</Menu.Item>
+        </Menu>
+      </div>
+
+      {/* Form Login */}
+      <div style={{ width: "300px", margin: "120px auto" }}>
+        {" "}
+        <Form onFinish={onFinish} layout="vertical">
+          <Form.Item
+            name="email"
+            label="Email"
+            rules={[{ required: true, message: "Please input your username!" }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="password"
+            label="Password"
+            rules={[{ required: true, message: "Please input your password!" }]}
+          >
+            <Input.Password />
+          </Form.Item>
+          <Form.Item>
+            <Button type="primary" htmlType="submit" block>
+              LOGIN
+            </Button>
+          </Form.Item>
+          <Form.Item>
+            <Button block onClick={() => navigate("/register")}>
+              REGISTER
+            </Button>
+          </Form.Item>
+        </Form>
+      </div>
+    </>
   );
 };
 

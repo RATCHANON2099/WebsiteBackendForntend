@@ -16,4 +16,5 @@ body {
   display: flex;
   min-height: 100%; /* ให้แน่ใจว่าระบบยืดขนาดเต็มหน้าจอ */
   flex-direction: column;
+  background: none !important;
 }

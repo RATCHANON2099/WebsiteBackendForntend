@@ -80,20 +80,30 @@ const FormEditUser = () => {
             boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
           }}
         >
-          <PageHeader
-            className="site-page-header"
-            title={<span style={{ color: "#fff" }}>Edit User</span>}
-            subTitle={
-              <span style={{ color: "#fff" }}>Update user information</span>
-            }
-            onBack={() => navigate("/data")}
+          <div
             style={{
               background: "#001529",
               borderRadius: "8px",
-              padding: "16px",
+              padding: "24px",
               marginBottom: "24px",
+              textAlign: "center",
             }}
-          />
+          >
+            <h1
+              style={{
+                background: "linear-gradient(135deg, #00C9FF 0%, #92FE9D 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                fontSize: "36px",
+                fontWeight: "bold",
+                margin: 0,
+                textShadow: "2px 2px 8px rgba(0, 0, 0, 0.3)",
+                letterSpacing: "1.5px",
+              }}
+            >
+              FORM
+            </h1>
+          </div>
 
           <Form
             layout="vertical"

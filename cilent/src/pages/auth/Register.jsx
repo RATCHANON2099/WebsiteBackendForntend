@@ -1,8 +1,8 @@
-// src/pages/auth/Register.jsx
 import React from "react";
-import { Form, Input, Button } from "antd";
+import { Form, Input, Button, Menu } from "antd";
 import { useNavigate } from "react-router-dom";
 import { register } from "../../functions/user";
+import { DownOutlined } from "@ant-design/icons"; // ✅ ลูกศรชี้ลง
 
 const Register = () => {
   const navigate = useNavigate();
@@ -18,43 +18,78 @@ const Register = () => {
       });
   };
 
+  // Navbar
+  const location = window.location.pathname;
+  const selectedKey = location;
+
   return (
-    <div style={{ width: "400px", margin: "100px auto" }}>
-      <h2>Register</h2>
-      <Form onFinish={onFinish} layout="vertical">
-        <Form.Item
-          name="username"
-          label="Username"
-          rules={[{ required: true, message: "Please input your username!" }]}
+    <>
+      <div
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          zIndex: 10,
+          backgroundColor: "#001529",
+          padding: "0 1rem",
+          display: "flex",
+          justifyContent: "flex-end", // 👉 ปุ่มอยู่ขวา
+        }}
+      >
+        <Menu
+          mode="horizontal"
+          selectedKeys={[selectedKey]}
+          onClick={(e) => navigate(e.key)}
+          theme="dark"
+          style={{
+            backgroundColor: "transparent",
+            borderBottom: "none",
+          }}
+          overflowedIndicator={<DownOutlined />}
         >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          name="email"
-          label="Email"
-          rules={[{ required: true, message: "Please input your email!" }]}
-        >
-          <Input type="email" />
-        </Form.Item>
-        <Form.Item
-          name="password"
-          label="Password"
-          rules={[{ required: true, message: "Please input your password!" }]}
-        >
-          <Input.Password />
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit" block>
-            Register
-          </Button>
-        </Form.Item>
-        <Form.Item>
-          <Button block onClick={() => navigate("/login")}>
-            Back to Login
-          </Button>
-        </Form.Item>
-      </Form>
-    </div>
+          <Menu.Item key="/">Home</Menu.Item>
+        </Menu>
+      </div>
+
+      {/* Form */}
+      <div style={{ width: "400px", margin: "120px auto" }}>
+        <h2>Register</h2>
+        <Form onFinish={onFinish} layout="vertical">
+          <Form.Item
+            name="username"
+            label="Username"
+            rules={[{ required: true, message: "Please input your username!" }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="email"
+            label="Email"
+            rules={[{ required: true, message: "Please input your email!" }]}
+          >
+            <Input type="email" />
+          </Form.Item>
+          <Form.Item
+            name="password"
+            label="Password"
+            rules={[{ required: true, message: "Please input your password!" }]}
+          >
+            <Input.Password />
+          </Form.Item>
+          <Form.Item>
+            <Button type="primary" htmlType="submit" block>
+              Register
+            </Button>
+          </Form.Item>
+          <Form.Item>
+            <Button block onClick={() => navigate("/login")}>
+              Back to Login
+            </Button>
+          </Form.Item>
+        </Form>
+      </div>
+    </>
   );
 };
 

@@ -1,27 +1,79 @@
+// src/pages/Home.jsx
 import React from "react";
+import { Layout, Typography, Button, Row, Col } from "antd";
 import { useNavigate } from "react-router-dom";
 
-function Home() {
-  const navigate = useNavigate(); // สร้างฟังก์ชัน navigate
+const { Content } = Layout;
+const { Title, Paragraph } = Typography;
 
-  const handleGetStarted = () => {
-    navigate("/login"); // ไปที่หน้า /login เมื่อคลิก
-  };
+const Home = () => {
+  const navigate = useNavigate();
+
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
-      <div className="text-center">
-        <h1 className="text-6xl font-extrabold text-white shadow-lg mb-6">
-          Home
-        </h1>
-        <button
-          onClick={handleGetStarted}
-          className="bg-white text-purple-700 hover:bg-purple-100 px-6 py-3 rounded-lg font-semibold text-lg transition duration-300 transform hover:scale-105 shadow-lg"
+    <Layout
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: "100vw",
+        height: "100vh",
+        margin: 0,
+        padding: 0,
+        background: "linear-gradient(to bottom right, #89f7fe, #66a6ff)",
+        overflow: "hidden",
+      }}
+    >
+      <Content>
+        <Row
+          justify="center"
+          align="middle"
+          style={{
+            height: "100%",
+            textAlign: "center",
+            padding: "0 1rem",
+          }}
         >
-          Get Started
-        </button>
-      </div>
-    </div>
+          <Col>
+            <Title
+              level={1}
+              style={{
+                color: "white",
+                fontWeight: "bold",
+                fontSize: "4rem",
+                textShadow: "2px 2px 8px rgba(0,0,0,0.3)",
+              }}
+            >
+              Welcome
+            </Title>
+            <Paragraph
+              style={{
+                color: "#f8f8f8",
+                fontSize: "1.2rem",
+                marginBottom: "2rem",
+              }}
+            >
+              Let&apos;s Start With Us!
+            </Paragraph>
+            <Button
+              size="large"
+              style={{
+                backgroundColor: "white",
+                color: "#1E90FF",
+                borderRadius: "50px",
+                padding: "0 2rem",
+                height: "48px",
+                fontWeight: "bold",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+              }}
+              onClick={() => navigate("/login")}
+            >
+              Get Started
+            </Button>
+          </Col>
+        </Row>
+      </Content>
+    </Layout>
   );
-}
+};
 
 export default Home;
