@@ -1,6 +1,6 @@
 // src/components/Login.jsx
 import React from "react";
-import { Button, Form, Input, notification } from "antd";
+import { Button, Form, Input, notification, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Menu } from "antd";
@@ -32,11 +32,19 @@ const Login = () => {
         description: `Welcome, ${user.name}`,
       });
 
-      // ไปหน้า /edit/:id
+      // ไปหน้า /data
       navigate(`/data`);
     } catch (err) {
       console.error("Login Error", err);
-      message.error("Invalid email or password");
+
+      // ตรวจสอบว่า error มาจาก response หรือไม่
+      if (err.response && err.response.data) {
+        // ถ้ามีข้อมูลใน response.body ให้แสดงข้อความจาก backend
+        message.error(err.response.data); // แสดงข้อความที่ได้จาก backend
+      } else {
+        // ถ้าไม่มีข้อมูลใน response.body หรือ error อื่นๆ
+        message.error("Invalid email or password");
+      }
     }
   };
 

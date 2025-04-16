@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Input, Button, Menu } from "antd";
+import { Form, Input, Button, Menu, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import { register } from "../../functions/user";
 import { DownOutlined } from "@ant-design/icons"; // ✅ ลูกศรชี้ลง
@@ -15,6 +15,15 @@ const Register = () => {
       })
       .catch((err) => {
         console.log("Register Error", err);
+        if (
+          err.response &&
+          err.response.status === 400 &&
+          err.response.data === "User Already Exists"
+        ) {
+          message.error("Email already exists! Please use a different email.");
+        } else {
+          message.error("Registration failed. Please try again.");
+        }
       });
   };
 
@@ -70,6 +79,8 @@ const Register = () => {
           >
             <Input.Password />
           </Form.Item>
+
+          {/* ConfirmPassword */}
           <Form.Item
             name="confirmPassword"
             label="Confirm Password"
