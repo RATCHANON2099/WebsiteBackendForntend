@@ -1,20 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { read, update } from "../../functions/user";
-import { Form, Input, Button, message, Layout, PageHeader } from "antd";
+import { Form, Input, Button, message, Layout } from "antd";
 
 const { Content } = Layout;
 
 const FormEditUser = () => {
+  const [form] = Form.useForm();
   const params = useParams();
   const navigate = useNavigate();
-  const [data, setData] = useState({
-    name: "",
-    age: "",
-    id_number: "",
-    phone_number: "",
-    role: "",
-  });
+  const [loading, setLoading] = useState(true); // ใช้เช็กว่ากำลังโหลด
 
   useEffect(() => {
     loadData(params.id);
@@ -23,24 +18,22 @@ const FormEditUser = () => {
   const loadData = async (id) => {
     try {
       const res = await read(id);
-      setData(res.data);
+      if (res.data) {
+        form.setFieldsValue(res.data); // กรอกข้อมูลที่มีอยู่ลงฟอร์ม
+      }
     } catch (err) {
-      console.log("Error loading data:", err);
+      console.error("Error loading data:", err);
       message.error("Failed to load user data");
+    } finally {
+      setLoading(false); // รอให้โหลดเสร็จก่อนแสดงฟอร์ม
     }
-  };
-
-  const handleChange = (e) => {
-    setData({
-      ...data,
-      [e.target.name]: e.target.value,
-    });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await update(params.id, data);
+      const values = form.getFieldsValue(); // ดึงค่าจากฟอร์ม
+      const res = await update(params.id, values);
       if (res) {
         message.success("User updated successfully");
         navigate("/data");
@@ -48,20 +41,13 @@ const FormEditUser = () => {
         message.error("Update failed");
       }
     } catch (err) {
-      console.log("Error during update:", err);
+      console.error("Error during update:", err);
       message.error("Failed to update user");
     }
   };
 
   return (
-    <Layout
-      style={{
-        minHeight: "100vh",
-        margin: 0,
-        padding: 0,
-        background: "#f0f2f5",
-      }}
-    >
+    <Layout style={{ minHeight: "100vh", background: "#f0f2f5" }}>
       <Content
         style={{
           display: "flex",
@@ -105,101 +91,64 @@ const FormEditUser = () => {
             </h1>
           </div>
 
-          <Form
-            layout="vertical"
-            onSubmitCapture={handleSubmit}
-            initialValues={data}
-          >
-            <Form.Item
-              label="Name"
-              name="name"
-              rules={[{ required: true, message: "Please input the name!" }]}
-            >
-              <Input
+          {!loading && (
+            <Form form={form} layout="vertical" onSubmitCapture={handleSubmit}>
+              <Form.Item
                 name="name"
-                onChange={handleChange}
-                placeholder="Enter name"
-                value={data.name}
-                style={{ borderRadius: "5px" }}
-              />
-            </Form.Item>
-
-            <Form.Item
-              label="Age"
-              name="age"
-              rules={[{ required: true, message: "Please input the age!" }]}
-            >
-              <Input
-                name="age"
-                onChange={handleChange}
-                placeholder="Enter age"
-                value={data.age}
-                style={{ borderRadius: "5px" }}
-              />
-            </Form.Item>
-
-            <Form.Item
-              label="ID Number"
-              name="id_number"
-              rules={[
-                { required: true, message: "Please input the ID number!" },
-              ]}
-            >
-              <Input
-                name="id_number"
-                onChange={handleChange}
-                placeholder="Enter ID Number"
-                value={data.id_number}
-                style={{ borderRadius: "5px" }}
-              />
-            </Form.Item>
-
-            <Form.Item
-              label="Phone Number"
-              name="phone_number"
-              rules={[
-                { required: true, message: "Please input the phone number!" },
-              ]}
-            >
-              <Input
-                name="phone_number"
-                onChange={handleChange}
-                placeholder="Enter phone number"
-                value={data.phone_number}
-                style={{ borderRadius: "5px" }}
-              />
-            </Form.Item>
-
-            <Form.Item
-              label="Role"
-              name="role"
-              rules={[{ required: true, message: "Please input the role!" }]}
-            >
-              <Input
-                name="role"
-                onChange={handleChange}
-                placeholder="Enter role"
-                value={data.role}
-                style={{ borderRadius: "5px" }}
-              />
-            </Form.Item>
-
-            <Form.Item>
-              <Button
-                type="primary"
-                htmlType="submit"
-                block
-                style={{
-                  backgroundColor: "#1890ff",
-                  borderRadius: "5px",
-                  fontSize: "16px",
-                  height: "40px",
-                }}
+                label="Name"
+                rules={[{ required: true, message: "Please input the name!" }]}
               >
-                Submit
-              </Button>
-            </Form.Item>
-          </Form>
+                <Input placeholder="Enter name" />
+              </Form.Item>
+
+              <Form.Item
+                name="age"
+                label="Age"
+                rules={[{ required: true, message: "Please input the age!" }]}
+              >
+                <Input placeholder="Enter age" />
+              </Form.Item>
+
+              <Form.Item
+                name="id_number"
+                label="ID Number"
+                rules={[
+                  { required: true, message: "Please input the ID number!" },
+                ]}
+              >
+                <Input placeholder="Enter ID Number" />
+              </Form.Item>
+
+              <Form.Item
+                name="phone_number"
+                label="Phone Number"
+                rules={[
+                  { required: true, message: "Please input the phone number!" },
+                ]}
+              >
+                <Input placeholder="Enter phone number" />
+              </Form.Item>
+
+              <Form.Item
+                name="role"
+                label="Role"
+                rules={[{ required: true, message: "Please input the role!" }]}
+              >
+                <Input placeholder="Enter role" />
+              </Form.Item>
+
+              <Form.Item>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  block
+                  style={{ fontSize: "16px", height: "40px" }}
+                >
+                  Submit
+                </Button>
+              </Form.Item>
+            </Form>
+          )}
         </div>
       </Content>
     </Layout>

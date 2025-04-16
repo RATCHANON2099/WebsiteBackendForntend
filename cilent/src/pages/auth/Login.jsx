@@ -1,10 +1,10 @@
 // src/components/Login.jsx
 import React from "react";
-import { Button, Form, Input, message } from "antd";
+import { Button, Form, Input, notification } from "antd";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Menu } from "antd";
-import { DownOutlined } from "@ant-design/icons"; // ✅ นำเข้าลูกศรชี้ลง
+import { DownOutlined } from "@ant-design/icons"; // นำเข้าลูกศรชี้ลง
 
 const Login = () => {
   const navigate = useNavigate();
@@ -19,11 +19,18 @@ const Login = () => {
       const user = res.data.user; // { id, name, email }
       const token = res.data.token;
 
+      if (!user || !user.id || !token) {
+        throw new Error("Missing user or token"); // โยน error เอง
+      }
+
       // บันทึกข้อมูลลง localStorage เผื่อใช้ภายหลัง
       localStorage.setItem("user", JSON.stringify(user));
       localStorage.setItem("token", token);
 
-      message.success("Login Success");
+      notification.success({
+        message: "Login Success",
+        description: `Welcome, ${user.name}`,
+      });
 
       // ไปหน้า /edit/:id
       navigate(`/edit/${user.id}`);
