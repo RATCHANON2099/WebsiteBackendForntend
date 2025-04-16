@@ -3,8 +3,10 @@ import { Table, Button, Space, message } from "antd";
 import { Link } from "react-router-dom";
 import { remove, getdata } from "../functions/user";
 import deleteEffect from "../components/DeleteEffect";
+import { useNavigate } from "react-router-dom";
 
 const Data = () => {
+  const navigate = useNavigate();
   const [data, setData] = useState([]);
   const user = JSON.parse(localStorage.getItem("user"));
   const userId = user?.id;
@@ -46,6 +48,7 @@ const Data = () => {
         .then(() => {
           message.success("User deleted successfully");
           loadData(); // โหลดข้อมูลใหม่หลังลบ
+          navigate("/"); //พาไปหน้า Home หลังลบเสร็จ
         })
         .catch((err) => {
           message.error("Failed to delete user");
