@@ -1,8 +1,9 @@
 import React from "react";
-import { Form, Input, Button, Menu, message } from "antd";
+import { Form, Input, Button, Menu, message, notification } from "antd";
 import { useNavigate } from "react-router-dom";
 import { register } from "../../functions/user";
 import { DownOutlined } from "@ant-design/icons"; // ✅ ลูกศรชี้ลง
+import { check } from "../../functions/auth";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -14,17 +15,20 @@ const Register = () => {
         navigate("/login");
       })
       .catch((err) => {
+        // ✅ ดึงข้อความจาก backend มาตรง ๆ
+        const backendMessage =
+          err.response?.data?.message || "Registration failed";
+
+        message.error(backendMessage); // ✅ แสดงข้อความ error
+
         console.log("Register Error", err);
-        if (
-          err.response &&
-          err.response.status === 400 &&
-          err.response.data === "User Already Exists"
-        ) {
-          message.error("Email already exists! Please use a different email.");
-        } else {
-          message.error("Registration failed. Please try again.");
-        }
       });
+  };
+
+  const validate = (value) => {
+    check(value).then((res) => {
+      res.send;
+    });
   };
 
   // Navbar
@@ -68,10 +72,14 @@ const Register = () => {
           <Form.Item
             name="email"
             label="Email"
-            rules={[{ required: true, message: "Please input your email!" }]}
+            rules={[
+              { required: true, message: "Please input your email!" },
+              { type: "email", message: "Please enter a valid email!" },
+            ]}
           >
             <Input type="email" />
           </Form.Item>
+
           <Form.Item
             name="password"
             label="Password"
