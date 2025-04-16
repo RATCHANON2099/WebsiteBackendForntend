@@ -33,7 +33,7 @@ const Login = () => {
       });
 
       // ไปหน้า /edit/:id
-      navigate(`/edit/${user.id}`);
+      navigate(`/data`);
     } catch (err) {
       console.error("Login Error", err);
       message.error("Invalid email or password");
@@ -46,7 +46,6 @@ const Login = () => {
 
   return (
     <>
-      {/* Navbar */}
       <div
         style={{
           position: "fixed",
