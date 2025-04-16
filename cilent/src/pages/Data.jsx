@@ -6,6 +6,8 @@ import { getdata } from "../functions/user";
 
 const Data = () => {
   const [data, setData] = useState([]);
+  const user = JSON.parse(localStorage.getItem("user"));
+  const userId = user?.id;
 
   useEffect(() => {
     loadData();
@@ -70,13 +72,17 @@ const Data = () => {
       key: "action",
       render: (text, record) => (
         <Space size="middle">
-          <Button
-            danger
-            onClick={() => handleRemove(record.id)}
-            style={{ borderRadius: "5px", fontWeight: "bold" }}
-          >
-            Delete
-          </Button>
+          {record.id === userId ? (
+            <Button
+              danger
+              onClick={() => handleRemove(record.id)}
+              style={{ borderRadius: "5px", fontWeight: "bold" }}
+            >
+              Delete
+            </Button>
+          ) : (
+            "-"
+          )}
         </Space>
       ),
     },
@@ -86,12 +92,16 @@ const Data = () => {
       render: (text, record) => (
         <Space size="middle">
           <Link to={`/edit/${record.id}`}>
-            <Button
-              type="primary"
-              style={{ borderRadius: "5px", fontWeight: "bold" }}
-            >
-              Edit
-            </Button>
+            {record.id === userId ? (
+              <Button
+                type="primary"
+                style={{ borderRadius: "5px", fontWeight: "bold" }}
+              >
+                Edit
+              </Button>
+            ) : (
+              "-"
+            )}
           </Link>
         </Space>
       ),
