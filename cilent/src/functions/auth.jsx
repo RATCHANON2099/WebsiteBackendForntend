@@ -15,6 +15,5 @@ export const read = async (id) => {
 export const update = async (id, data) => {
   return await axios.put(process.env.REACT_APP_API + "/product/" + id, data);
 };
-export const check = async (value) => {
-  return await axios.post(import.meta.env.VITE_API_URL + "/check-email", value);
-};
+
+//ยังไม่ได้ใช้
