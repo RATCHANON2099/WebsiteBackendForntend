@@ -57,13 +57,6 @@ const Register = () => {
         <h2>Register</h2>
         <Form onFinish={onFinish} layout="vertical">
           <Form.Item
-            name="username"
-            label="Username"
-            rules={[{ required: true, message: "Please input your username!" }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
             name="email"
             label="Email"
             rules={[{ required: true, message: "Please input your email!" }]}

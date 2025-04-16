@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Table, Button, Space, message } from "antd";
 import { Link } from "react-router-dom";
-import { remove } from "../functions/user";
-import { getdata } from "../functions/user";
+import { remove, getdata } from "../functions/user";
+import deleteEffect from "../components/DeleteEffect";
 
 const Data = () => {
   const [data, setData] = useState([]);
   const user = JSON.parse(localStorage.getItem("user"));
   const userId = user?.id;
+  const [userHasInfo, setUserHasInfo] = useState(false); // ตรวจสอบว่าผู้ใช้กรอกข้อมูลแล้วหรือยัง
 
   useEffect(() => {
     loadData();
@@ -15,20 +16,42 @@ const Data = () => {
 
   const loadData = async () => {
     getdata()
-      .then((res) => setData(res.data))
+      .then((res) => {
+        const allData = res.data;
+
+        // หาข้อมูลของ user ที่ login อยู่
+        const currentUserData = allData.find((item) => item.id === userId);
+
+        // ตรวจสอบว่า user มีข้อมูลเพิ่มเติมหรือยัง เช่น age, เบอร์, เลขบัตร
+        const hasInfo =
+          currentUserData?.age &&
+          currentUserData?.phone_number &&
+          currentUserData?.id_number;
+        setUserHasInfo(!!hasInfo); // แปลงให้เป็น boolean แล้วเซตค่า
+
+        // กรองข้อมูล: ถ้ายังไม่มีข้อมูล → ไม่แสดงของ user นี้ในตาราง
+        const filteredData = allData.filter(
+          (item) => item.id !== userId || (item.id === userId && hasInfo)
+        );
+
+        setData(filteredData); // เซตข้อมูลที่จะแสดงในตาราง
+      })
       .catch((err) => console.log(err));
   };
 
   const handleRemove = async (id) => {
-    remove(id)
-      .then((res) => {
-        message.success("User deleted successfully");
-        loadData();
-      })
-      .catch((err) => {
-        message.error("Failed to delete user");
-        console.log(err);
-      });
+    const confirmed = await deleteEffect(); // รอการยืนยันก่อนลบ
+    if (confirmed) {
+      remove(id)
+        .then(() => {
+          message.success("User deleted successfully");
+          loadData(); // โหลดข้อมูลใหม่หลังลบ
+        })
+        .catch((err) => {
+          message.error("Failed to delete user");
+          console.error(err);
+        });
+    }
   };
 
   const columns = [
@@ -72,7 +95,7 @@ const Data = () => {
       key: "action",
       render: (text, record) => (
         <Space size="middle">
-          {record.id === userId ? (
+          {record.id === userId && userHasInfo ? (
             <Button
               danger
               onClick={() => handleRemove(record.id)}
@@ -92,7 +115,7 @@ const Data = () => {
       render: (text, record) => (
         <Space size="middle">
           <Link to={`/edit/${record.id}`}>
-            {record.id === userId ? (
+            {record.id === userId && userHasInfo ? (
               <Button
                 type="primary"
                 style={{ borderRadius: "5px", fontWeight: "bold" }}
@@ -110,7 +133,57 @@ const Data = () => {
 
   return (
     <div style={{ padding: "20px 50px" }}>
-      <h2>Users Data</h2>
+      {/* ปุ่ม Add Your Information */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          marginBottom: "16px",
+        }}
+      >
+        {userHasInfo ? (
+          // ปุ่มสีเทา เมื่อผู้ใช้กรอกข้อมูลแล้ว
+          <Button
+            type="default"
+            disabled
+            style={{
+              borderRadius: "8px",
+              fontWeight: "bold",
+              backgroundColor: "#f0f0f0",
+              borderColor: "#d9d9d9",
+              color: "#999",
+              cursor: "not-allowed",
+              boxShadow: "none",
+            }}
+          >
+            ✅ Information Submitted
+          </Button>
+        ) : (
+          // ปุ่มปกติเมื่อยังไม่กรอกข้อมูล
+          <Link to={`/edit/${userId}`}>
+            <Button
+              type="primary"
+              style={{
+                backgroundColor: "#1677ff",
+                borderColor: "#1677ff",
+                borderRadius: "8px",
+                fontWeight: "bold",
+                boxShadow: "0 4px 8px rgba(22, 119, 255, 0.3)",
+                transition: "all 0.3s ease-in-out",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "scale(1.05)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "scale(1)";
+              }}
+            >
+              Add Your Information
+            </Button>
+          </Link>
+        )}
+      </div>
+
       <Table
         columns={columns}
         dataSource={data}
