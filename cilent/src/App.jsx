@@ -26,16 +26,23 @@ function AppWrapper() {
     //HTML
     <>
       {!shouldHideNavbar && <Navbar />}
-      <div style={{ padding: "2rem" }}>
+
+      {/* ✅ ซ่อน padding เฉพาะหน้า Home */}
+      {location.pathname === "/" ? (
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/form" element={<FormUser />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/data" element={<Data />} />
-          <Route path="/edit/:id" element={<FormEditUser />} />
         </Routes>
-      </div>
+      ) : (
+        <div style={{ padding: "2rem" }}>
+          <Routes>
+            <Route path="/form" element={<FormUser />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/data" element={<Data />} />
+            <Route path="/edit/:id" element={<FormEditUser />} />
+          </Routes>
+        </div>
+      )}
     </>
   );
 }

@@ -3,7 +3,6 @@ import { Form, Input, Button, Menu, message, notification } from "antd";
 import { useNavigate } from "react-router-dom";
 import { register } from "../../functions/user";
 import { DownOutlined } from "@ant-design/icons"; // ✅ ลูกศรชี้ลง
-import { check } from "../../functions/auth";
 
 const Register = () => {
   const navigate = useNavigate();
