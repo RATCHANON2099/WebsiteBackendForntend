@@ -8,12 +8,21 @@ const config = require("./config"); //นำเข้า config module เพื
 const { sequelize, testconnectDB } = require("./config/db.js"); //นำเข้า sequelize instance จาก config module
 const dotenv = require("dotenv"); //นำเข้า dotenv module เพื่อใช้ในการโหลด env
 dotenv.config(); //โหลด dotenv เพื่อให้สามารถใช้ env ได้
-const { User } = require("./models/user"); //นำเข้า model user เพื่อใช้ในการทำงานกับ database
 const { FORCE } = require("sequelize/lib/index-hints");
+const path = require("path");
 
 const app = express(); //สร้างตัวแปร app เพื่อใช้ในการทำงานของ express
 console.log("server", config); //แสดงค่าของ config
 testconnectDB(); //เชื่อมต่อกับ database พร้อมแสดงข้อความว่าเชื่อมต่อสำเร็จ
+
+//Auto-load models นำเข้าจาก models อัตโนมัติ
+const basename = path.basename(__filename);
+const modelsPath = path.join(__dirname, "models");
+readdirSync(modelsPath)
+  .filter((file) => file !== basename && file.endsWith(".js"))
+  .forEach((file) => {
+    require(path.join(modelsPath, file)); // auto-load models
+  });
 
 app.use(morgan("dev")); //ใช้ morgan middleware เพื่อ log request ในรูปแบบ dev
 app.use(cors()); //ใช้ cors middleware เพื่อจัดการ CORS
