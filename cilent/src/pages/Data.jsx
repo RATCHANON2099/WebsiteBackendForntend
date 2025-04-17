@@ -1,3 +1,4 @@
+// src/pages/Data.jsx
 import React, { useState, useEffect } from "react";
 import { Table, Button, Space, message } from "antd";
 import { Link } from "react-router-dom";
@@ -117,18 +118,18 @@ const Data = () => {
       key: "edit",
       render: (text, record) => (
         <Space size="middle">
-          <Link to={`/edit/${record.id}`}>
-            {record.id === userId && userHasInfo ? (
+          {record.id === userId && userHasInfo ? (
+            <Link to={`/edit/${record.id}`}>
               <Button
                 type="primary"
                 style={{ borderRadius: "5px", fontWeight: "bold" }}
               >
                 Edit
               </Button>
-            ) : (
-              "-"
-            )}
-          </Link>
+            </Link>
+          ) : (
+            "-"
+          )}
         </Space>
       ),
     },
