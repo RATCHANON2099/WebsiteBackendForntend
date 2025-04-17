@@ -27,9 +27,13 @@ const Login = () => {
       localStorage.setItem("user", JSON.stringify(user));
       localStorage.setItem("token", token);
 
+      // ถ้าไม่มีชื่อหรือ name เป็น null ให้แสดงชื่อเป็น USER
+      const userName = user?.name?.trim() ? user.name : "USER";
+
+      //แสดงข้อความหาก Login สำเร็จ
       notification.success({
         message: "Login Success",
-        description: `Welcome, ${user.name}`,
+        description: `Welcome, ${userName}`,
       });
 
       // ไปหน้า /data
