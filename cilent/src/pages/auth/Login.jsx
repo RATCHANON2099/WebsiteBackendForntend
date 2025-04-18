@@ -37,7 +37,7 @@ const Login = () => {
       });
 
       // ไปหน้า /data
-      navigate(`/data`);
+      navigate(`/datauser`);
     } catch (err) {
       console.error("Login Error", err);
 

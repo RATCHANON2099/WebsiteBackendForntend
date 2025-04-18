@@ -1,14 +1,32 @@
+// Routes/user.js
 const express = require("express");
-const router = express.Router(); //สร้างตัวแปร router เพื่อใช้ในการทำงานของ express.Router()
-const { read, list, create, update, remove } = require("../Controllers/user"); //นำเข้า controller product เพื่อใช้ในการจัดการ request
-//middleware
-const { auth } = require("../Middleware/auth");
+const router = express.Router();
+const {
+  read,
+  list,
+  create,
+  update,
+  remove,
+  updateMyInfo,
+} = require("../Controllers/user");
+const { auth } = require("../Middleware/auth"); // ใช้ middleware auth ที่จะเช็ค token
 
-//http://localhost:5000/api/product
-router.get("/user", list); //ใช้ router.get() เพื่อสร้าง route ใหม่ โดยใช้ method GET และ path /user
-router.get("/user/:id", read); //ใช้ router.get() เพื่อสร้าง route ใหม่ โดยใช้ method GET และ path /user/:id
-router.post("/user", create); //ใช้ router.post() เพื่อสร้าง route ใหม่ โดยใช้ method POST และ path /user
-router.put("/user/:id", update); //ใช้ router.put() เพื่อสร้าง route ใหม่ โดยใช้ method PUT และ path /user/:id
-router.delete("/user/:id", remove); //ใช้ router.delete() เพื่อสร้าง route ใหม่ โดยใช้ method DELETE และ path /user/:id
+// Routes สำหรับการอ่านข้อมูลของผู้ใช้
+router.get("/:id", auth, read); // ต้องล็อกอินก่อนถึงจะดูข้อมูลได้
 
-module.exports = router; //ส่ง router ออกไปใช้งานในไฟล์อื่นๆ
+// Routes สำหรับดึงข้อมูลผู้ใช้ทั้งหมด (ต้องเป็น admin)
+router.get("/", auth, list);
+
+// Routes สำหรับสร้างผู้ใช้ใหม่
+router.post("/", create); // สามารถเข้าถึงได้จากทุกคน
+
+// Routes สำหรับการอัพเดตข้อมูลผู้ใช้ (ผู้ใช้ที่ล็อกอิน)
+router.put("/:id", auth, update); // ต้องล็อกอินก่อนถึงจะอัพเดตได้
+
+// Routes สำหรับการลบผู้ใช้ (ต้องเป็น admin)
+router.delete("/:id", auth, remove);
+
+// Routes สำหรับอัพเดตข้อมูลผู้ใช้ (เฉพาะตัวเองที่ล็อกอิน)
+router.patch("/updateMe", auth, updateMyInfo);
+
+module.exports = router;

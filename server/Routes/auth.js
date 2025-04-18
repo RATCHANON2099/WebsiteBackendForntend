@@ -1,3 +1,4 @@
+// Routes/addmin.js
 //สร้างไฟล์ auth.js ในโฟลเดอร์ Routes เพื่อใช้ในการจัดการเส้นทางของ API ที่เกี่ยวข้องกับการตรวจสอบสิทธิ์ (Authentication)
 
 const express = require("express");

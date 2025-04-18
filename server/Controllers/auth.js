@@ -1,3 +1,5 @@
+// Controllers/auth.js
+// ใช้เข้ารหัส
 const { User } = require("../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -46,9 +48,14 @@ exports.login = async (req, res) => {
 
     // ✅ แก้: เอา ":" ออกจาก "jwtsecret:"
     jwt.sign(
-      { email: user.email },
+      {
+        //สิ่งที่ส่งเข้า token
+        id: user.id,
+        email: user.email,
+        role: user.role,
+      },
       "jwtsecret",
-      { expiresIn: 30 },
+      { expiresIn: "1h" },
       (err, token) => {
         if (err) throw err;
 
@@ -59,6 +66,7 @@ exports.login = async (req, res) => {
             id: user.id,
             name: user.name,
             email: user.email,
+            role: user.role,
           },
         });
       }
