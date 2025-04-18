@@ -11,9 +11,6 @@ const {
   getDataEmployee,
 } = require("../Controllers/employee");
 
-// ✅ ดึงข้อมูล Employee ของ User ที่ Login อยู่
-router.get("/employee/me", auth, getDataEmployee); // ถูกต้อง
-
 // ✅ ดึงข้อมูล Employee ด้วย ID ที่ระบุ (สำหรับหน้า Edit)
 router.get("/employee/:id", auth, getEmployeeById); // *** แก้ให้เรียก Controller ที่ถูกต้อง ***
 

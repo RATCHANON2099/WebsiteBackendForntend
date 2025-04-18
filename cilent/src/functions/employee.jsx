@@ -44,13 +44,3 @@ export const deleteEmployee = async (id, token) => {
     },
   });
 };
-
-// ใช้ดึงข้อมูลของ Employee จาก ID หรือก็คือเลือกเป็นรายบุคคล
-export const getEmployeeById = async (id, token) => {
-  return await axios.get(`${API_URL}/employee/${id}`, {
-    // เปลี่ยน API เป็น API_URL
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-};
