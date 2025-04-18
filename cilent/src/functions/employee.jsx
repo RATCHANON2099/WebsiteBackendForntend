@@ -54,3 +54,13 @@ export const getEmployeeById = async (id, token) => {
     },
   });
 };
+
+// ใช้ดึงข้อมูล Employee ทั้งหมดของ User ที่ Login อยู่
+export const getAllMyEmployees = async (token) => {
+  return await axios.get(`${API_URL}/employee/my-list`, {
+    // เรียก Endpoint ใหม่
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
