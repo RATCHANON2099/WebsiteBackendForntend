@@ -66,7 +66,7 @@ const Navbar = () => {
             </span>
           }
         >
-          <Menu.Item key="/data">Data</Menu.Item>
+          <Menu.Item key="/datauser">Data</Menu.Item>
           <Menu.Item key="/login">Logout</Menu.Item>
         </SubMenu>
       </Menu>

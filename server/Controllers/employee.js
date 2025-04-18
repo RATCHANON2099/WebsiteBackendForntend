@@ -56,10 +56,11 @@ exports.updateEmployee = async (req, res) => {
     }
 
     // อัปเดตข้อมูลพนักงาน
-    employee.name = name || employee.name;
     employee.email = email || employee.email;
-    employee.phone = phone || employee.phone;
-    employee.id_card = id_card || employee.id_card;
+    employee.name = name || employee.name;
+    employee.age = age || employee.age;
+    employee.phone_number = phone || employee.phone_number;
+    employee.id_number = id_card || employee.id_number;
 
     await employee.save(); // บันทึกการอัปเดต
 

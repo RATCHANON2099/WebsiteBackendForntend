@@ -8,7 +8,7 @@ import Home from "./pages/Home";
 import Navbar from "./components/Navbar";
 import DataUser from "./pages/auth/DataUser";
 import FormUser from "./pages/auth/FormUser";
-import UpdateUserInfo from "./components/updateUserInfo";
+import UpdateDataInfo from "/src/components/UpdateDataInfo";
 
 function AppWrapper() {
   const location = useLocation();
@@ -28,7 +28,8 @@ function AppWrapper() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/datauser" element={<DataUser />} />
-            <Route path="/edit/:userId" element={<FormUser />} />
+            <Route path="/form/:userId" element={<FormUser />} />
+            <Route path="/updatedata/:id" element={<UpdateDataInfo />} />
           </Routes>
         </div>
       )}

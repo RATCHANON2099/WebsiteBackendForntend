@@ -124,7 +124,7 @@ const DataUser = () => {
       key: "edit",
       render: (text, record) => (
         <Space size="middle">
-          <Link to={`/edit/${record.id}`}>
+          <Link to={`/updatedata/${record.id}`}>
             <Button
               type="primary"
               style={{ borderRadius: "5px", fontWeight: "bold" }}
@@ -166,7 +166,7 @@ const DataUser = () => {
           </Button>
         ) : (
           // ปุ่มปกติเมื่อยังไม่กรอกข้อมูล
-          <Link to={`/edit/${userId}`}>
+          <Link to={`/form/${userId}`}>
             <Button
               type="primary"
               style={{
